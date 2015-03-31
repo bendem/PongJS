@@ -1,10 +1,10 @@
 # PongJS
 
-This is a pong written in js for the fun.
+This is a pong written in javascript for the fun.
 I guess my goal is to write a pong in every language I know
-(even though the real will be to actually finish one of them).
+(even though the real challenge will be to actually finish one of them).
 
-You can check it out [here](https://bendem.github.io/PongJS/pong.html) (not finished!)
+You can check it out [here](https://bendem.github.io/PongJS/pong.html) (not finished!).
 
 ## License
 
