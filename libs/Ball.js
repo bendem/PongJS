@@ -67,6 +67,8 @@ Ball.prototype = {
 
     update: function(time) {
         // TODO Handle collision with the platform somewhere in here
+        // TODO When colliding, the velocity rotation should be set
+        //      based on the distance from the center of the platform
 
         if(!this.previousFrame) {
             // First time we only get the time (used to compute next deltas)
