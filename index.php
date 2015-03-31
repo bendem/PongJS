@@ -1,5 +1,6 @@
 <?php
 
+// Hi, I'm an horrible person
 function includeJS($file) {
     $js = file($file);
     foreach ($js as $i => $line) {

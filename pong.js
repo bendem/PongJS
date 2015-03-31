@@ -13,6 +13,7 @@ var platformWidth = 150;
 var platformHeight = 15;
 var lifes = 3;
 
+// Hi, I'm an horrible person
 :include libs/Vector.js;
 :include libs/Point.js;
 :include libs/Ball.js;
