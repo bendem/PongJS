@@ -16,3 +16,5 @@ LostText.prototype.draw = function(ctx) {
 }
 
 LostText.prototype.update = function() {}
+LostText.prototype.containerWidthChanged = function() {}
+LostText.prototype.containerHeightChanged = function() {}
