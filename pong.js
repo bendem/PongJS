@@ -21,7 +21,7 @@ var game_loop;
 
 // I don't want a single monster file, but this is meant for gh-pages
 // so yeah.
-requirejs(
+window.addEventListener('load', function() { requirejs(
     ['libs/Vector', 'libs/Point', 'libs/Ball', 'libs/Platform', 'libs/LostText'],
     function() {
         /**
@@ -137,4 +137,4 @@ requirejs(
             $pong.dispatchEvent(new CustomEvent('update', { detail: Date.now() }));
         }, 1000/fps);
     }
-);
+)});
