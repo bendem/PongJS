@@ -76,6 +76,14 @@ requirejs(
             platform.move(e.clientX - $pong.offsetLeft);
         });
 
+        // Touch handling
+        window.addEventListener('touchmove', function(e) {
+            platform.move(e.changedTouches[0].clientX - $pong.offsetLeft);
+        }, false);
+        window.addEventListener('touchstart', function(e) {
+            platform.move(e.changedTouches[0].clientX - $pong.offsetLeft);
+        }, false);
+
         var drawLifes = function(ctx) {
             ctx.beginPath();
             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
