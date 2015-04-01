@@ -1,3 +1,5 @@
+"use strict";
+
 var Ball = function(position, velocity, radius,
         velocityIncreaseRate, velocityIncreaseDelay, platform) {
     // Center of the ball

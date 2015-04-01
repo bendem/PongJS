@@ -1,3 +1,5 @@
+"use strict";
+
 var LostText = function(text, style, font) {
     this.text = text;
     this.style = style;

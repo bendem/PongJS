@@ -1,3 +1,5 @@
+"use strict";
+
 // position: Point containing the top left corner position
 var Platform = function(position, width, height) {
     this.position = position;

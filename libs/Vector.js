@@ -1,3 +1,5 @@
+"use strict";
+
 // Vector is immutable
 var Vector = function(x, y) {
     this.x = x;
