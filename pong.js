@@ -85,9 +85,9 @@ requirejs(
         }
 
         var drawLifes = function(ctx) {
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
             for(var i = 0; i < lifes; i++) {
-                ctx.beginPath();
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
                 ctx.arc(
                     w - 15,
                     22 * i + 15,
@@ -95,8 +95,8 @@ requirejs(
                     0,
                     2 * Math.PI
                 );
-                ctx.fill();
             }
+            ctx.fill();
         }
 
         $pong.addEventListener('draw', function(e) {
