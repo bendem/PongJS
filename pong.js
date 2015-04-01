@@ -22,7 +22,7 @@ var game_loop;
 // I don't want a single monster file, but this is meant for gh-pages
 // so yeah.
 window.addEventListener('load', function() { requirejs(
-    ['libs/Vector', 'libs/Point', 'libs/Ball', 'libs/Platform', 'libs/LostText'],
+    ['libs/Vector', 'libs/Point', 'libs/Ball', 'libs/Platform', 'libs/LostText', 'libs/Timer'],
     function() {
         /**
          * Actual code
@@ -44,9 +44,11 @@ window.addEventListener('load', function() { requirejs(
             5000,
             platform
         );
+        var timer = new Timer('rgba(255, 255, 255, 0.8)', '1.1rem sans-serif');
         var objects = [
             ball,
-            platform
+            platform,
+            timer
         ];
 
         $pong.width = w;
