@@ -52,7 +52,7 @@ window.addEventListener('load', function() { requirejs(
         $pong.width = w;
         $pong.height = h;
 
-        window.addEventListener('resize', function(e) {
+        var sizeChangedHandler = function(e) {
             if($pong.offsetWidth != w) {
                 objects.forEach(function(object, _) {
                     object.containerWidthChanged($pong.offsetWidth);
@@ -70,7 +70,9 @@ window.addEventListener('load', function() { requirejs(
             $pong.height = h;
             // Force redrawing to prevent black frames
             $pong.dispatchEvent(new CustomEvent('draw', { detail: ctx }));
-        });
+        }
+        window.addEventListener('resize', sizeChangedHandler);
+        window.addEventListener('deviceorientation', sizeChangedHandler);
 
         window.addEventListener('mousemove', function(e) {
             platform.move(e.clientX - $pong.offsetLeft);
