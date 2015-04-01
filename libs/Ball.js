@@ -1,5 +1,5 @@
 var Ball = function(position, velocity, radius,
-        velocityIncreaseRate, velocityIncreaseDelay) {
+        velocityIncreaseRate, velocityIncreaseDelay, platform) {
     // Center of the ball
     this.position = position;
     // Velocity of the ball (in unit per ms)
@@ -10,6 +10,8 @@ var Ball = function(position, velocity, radius,
     this.velocityIncreaseRate = velocityIncreaseRate;
     // Delay between velocity increase
     this.velocityIncreaseDelay = velocityIncreaseDelay;
+    // The plateform (needed for collision handling)
+    this.platform = platform;
 
     // Original velocity
     this.originalVelocity = this.velocity.clone();
@@ -87,9 +89,9 @@ Ball.prototype = {
         // TODO When colliding, the velocity rotation should be set
         //      based on the distance from the center of the platform
         if(actualVelocity.y > 0) {
-            if(this.getBottomY() + actualVelocity.y >= platform.getTopY()
-                    && this.getLeftX() < platform.getRightX()
-                    && this.getRightX() > platform.getLeftX()) {
+            if(this.getBottomY() + actualVelocity.y >= this.platform.getTopY()
+                    && this.getLeftX() < this.platform.getRightX()
+                    && this.getRightX() > this.platform.getLeftX()) {
                 console.debug('collision');
                 this.velocity.y *= -1;
                 actualVelocity.y *= -1;
@@ -119,7 +121,6 @@ Ball.prototype = {
                 ctx.font = '2rem sans-serif';
                 ctx.fillStyle = 'rgba(255, 150, 150, 0.8)';
                 var dimensions = ctx.measureText('You loose!');
-                console.log(dimensions);
                 ctx.fillText(
                     'You loose!',
                     w / 2 - dimensions.width / 2, // Center the text
