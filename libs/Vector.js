@@ -24,12 +24,15 @@ Vector.prototype = {
     },
 
     rotate: function(rotation) {
-        if(rotation % 2 * Math.PI == 0) {
+        if(rotation % (2 * Math.PI) == 0) {
             return this.clone();
         }
 
-        var x = Math.cos(rotation) * this.x + (-Math.sin(rotation) * this.y);
-        var y = Math.sin(rotation) * this.x + Math.cos(rotation) * this.y;
+        var cos = Math.cos(rotation);
+        var sin = Math.sin(rotation);
+
+        var x = cos * this.x + (-sin * this.y);
+        var y = sin * this.x + cos * this.y;
 
         return new Vector(x, y);
     },
