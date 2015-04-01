@@ -68,7 +68,8 @@ requirejs(
             h = $pong.offsetHeight;
             $pong.width = w;
             $pong.height = h;
-            drawAll(ctx);
+            // Force redrawing to prevent black frames
+            $pong.dispatchEvent(new CustomEvent('draw', { detail: ctx }));
         });
 
         window.addEventListener('mousemove', function(e) {
@@ -123,7 +124,7 @@ requirejs(
             clearInterval(game_loop);
             console.log('YOU LOST BIATCH!');
             var text = new LostText(
-                'You loose!',
+                'You lose!',
                 'rgba(255, 150, 150, 0.8)',
                 '2rem sans-serif'
             );
@@ -135,6 +136,5 @@ requirejs(
             $pong.dispatchEvent(new CustomEvent('draw', { detail: ctx }));
             $pong.dispatchEvent(new CustomEvent('update', { detail: Date.now() }));
         }, 1000/fps);
-
     }
 )

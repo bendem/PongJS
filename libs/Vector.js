@@ -10,16 +10,29 @@ Vector.prototype = {
     },
 
     getRotation: function() {
-        return Math.atan(this.y / this.x);
+        var res = Math.atan(this.y / this.x);
+        if(this.x >= 0 && this.y >= 0) { // 1
+            return res;
+        } else if(this.x >= 0 && this.y <= 0) { // 4
+            return res + 2 * Math.PI;
+        } else if(this.x < 0 && this.y >= 0) { // 2
+            return res + Math.PI;
+        } else if(this.x < 0 && this.y < 0) { // 3
+            return res + Math.PI;
+        }
     },
 
     setRotation: function(rotation) {
+        rotation %= 2 * Math.PI;
+        if(rotation < 0) {
+            rotation += 2 * Math.PI;
+        }
         var current = this.getRotation();
+
         if(rotation == current) {
             return this.clone();
         }
 
-        // TODO Check that works in all cases (rotation > current & rotation < current)?
         return this.rotate(rotation - current);
     },
 

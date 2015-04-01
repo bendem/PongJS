@@ -96,12 +96,9 @@ Ball.prototype = {
                 var platformCenter = this.platform.getLeftX() + halfPlatform;
                 var distance = Math.abs(this.position.x - platformCenter);
 
-                // Limit the rotation between .2 and .8 %
-                var percent = Math.min(
-                    Math.max(.2, distance / halfPlatform),
-                    .8
-                );
-                var rotation = -half_pi;
+                // Limit the rotation to .7 %
+                var percent = Math.min(.7, distance / halfPlatform);
+                var rotation = 3 * half_pi;
                 if(this.position.x < platformCenter) {
                     rotation -= percent * half_pi;
                 } else {
