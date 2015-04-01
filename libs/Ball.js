@@ -103,31 +103,16 @@ Ball.prototype = {
         //   /\
         //  /  o
         // /
-        if(this.getLeftX() + actualVelocity.x < 0
-                || this.getRightX() + actualVelocity.x > w) {
-            this.velocity.x *= -1;
+        if(this.getLeftX() + actualVelocity.x < 0) {
+            this.velocity.x = Math.abs(this.velocity.x);
+        } else if(this.getRightX() + actualVelocity.x > w) {
+            this.velocity.x = -Math.abs(this.velocity.x);
         }
 
         if(this.getTopY() + actualVelocity.y < 0) {
-            this.velocity.y *= -1;
+            this.velocity.y = Math.abs(this.velocity.y);
         } else if(this.getBottomY() + actualVelocity.y > h) {
-            if(lifes-- <= 0) {
-                clearInterval(game_loop);
-                console.log('YOU LOST BIATCH!');
-                // TODO Drawing doesn't really belong here, maybe add an event or smt
-                // TODO Don't steal ctx from the global scope (bad dev!)
-                // TODO Since the text is not in the object list,
-                //      resizing redraw the canvas without it
-                ctx.font = '2rem sans-serif';
-                ctx.fillStyle = 'rgba(255, 150, 150, 0.8)';
-                var dimensions = ctx.measureText('You loose!');
-                ctx.fillText(
-                    'You loose!',
-                    w / 2 - dimensions.width / 2, // Center the text
-                    h / 3
-                );
-                return;
-            }
+            $pong.dispatchEvent(new Event('life_lost'));
             this.setTopY(0);
             this.velocity = this.originalVelocity;
             this.initTimes(time);

@@ -17,7 +17,7 @@ var game_loop;
 // I don't want a single monster file, but this is meant for gh-pages
 // so yeah.
 requirejs(
-    ['libs/Vector', 'libs/Point', 'libs/Ball', 'libs/Platform'],
+    ['libs/Vector', 'libs/Point', 'libs/Ball', 'libs/Platform', 'libs/LostText'],
     function() {
         /**
          * Actual code
@@ -93,20 +93,42 @@ requirejs(
             }
         }
 
-        var drawAll = function(ctx) {
+        $pong.addEventListener('draw', function(e) {
+            var ctx = e.detail;
             init(ctx);
             objects.forEach(function(object, _) {
                 object.draw(ctx);
             });
             drawLifes(ctx);
-        }
+        });
+
+        $pong.addEventListener('update', function(e) {
+            objects.forEach(function(object, _) {
+                object.update(e.detail);
+            });
+        });
+
+        $pong.addEventListener('life_lost', function() {
+            if(lifes-- <= 0) {
+                $pong.dispatchEvent(new Event('game_lost'));
+            }
+        });
+
+        $pong.addEventListener('game_lost', function() {
+            clearInterval(game_loop);
+            console.log('YOU LOST BIATCH!');
+            var text = new LostText(
+                'You loose!',
+                'rgba(255, 150, 150, 0.8)',
+                '2rem sans-serif'
+            );
+            objects.push(text);
+            text.draw(ctx);
+        });
 
         game_loop = setInterval(function() {
-            drawAll(ctx);
-            var now = Date.now();
-            objects.forEach(function(object, _) {
-                object.update(now);
-            });
+            $pong.dispatchEvent(new CustomEvent('draw', { detail: ctx }));
+            $pong.dispatchEvent(new CustomEvent('update', { detail: Date.now() }));
         }, 1000/fps);
 
     }
