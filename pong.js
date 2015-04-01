@@ -76,14 +76,6 @@ requirejs(
             platform.move(e.clientX - $pong.offsetLeft);
         });
 
-        var init = function(ctx) {
-            // Fill the canvas
-            ctx.beginPath();
-            ctx.rect(0, 0, w, h);
-            ctx.fillStyle = '#222';
-            ctx.fill();
-        }
-
         var drawLifes = function(ctx) {
             ctx.beginPath();
             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
@@ -101,7 +93,7 @@ requirejs(
 
         $pong.addEventListener('draw', function(e) {
             var ctx = e.detail;
-            init(ctx);
+            ctx.clearRect(0, 0, w, h);
             objects.forEach(function(object, _) {
                 object.draw(ctx);
             });
@@ -137,4 +129,4 @@ requirejs(
             $pong.dispatchEvent(new CustomEvent('update', { detail: Date.now() }));
         }, 1000/fps);
     }
-)
+);
