@@ -91,24 +91,21 @@ Ball.prototype = {
             if(this.getBottomY() + actualVelocity.y >= this.platform.getTopY()
                     && this.getLeftX() < this.platform.getRightX()
                     && this.getRightX() > this.platform.getLeftX()) {
-                console.debug('collision');
-
                 // Set the velocity rotation based on where the ball hit the platform
                 var halfPlatform = this.platform.width / 2;
                 var platformCenter = this.platform.getLeftX() + halfPlatform;
                 var distance = Math.abs(this.position.x - platformCenter);
-                var HALF_PI = Math.PI / 2; // TODO Move to constants
 
                 // Limit the rotation between .2 and .8 %
                 var percent = Math.min(
                     Math.max(.2, distance / halfPlatform),
                     .8
                 );
-                var rotation = -HALF_PI;
+                var rotation = -half_pi;
                 if(this.position.x < platformCenter) {
-                    rotation -= percent * HALF_PI;
+                    rotation -= percent * half_pi;
                 } else {
-                    rotation += percent * HALF_PI;
+                    rotation += percent * half_pi;
                 }
                 this.velocity = this.velocity.setRotation(rotation);
 

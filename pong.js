@@ -1,16 +1,21 @@
 "use strict"
 
 /**
- * Globals
+ * Constants
  */
 var fps = 60;
+var half_pi = Math.PI / 2;
+var ballRadius = 15;
+var platformWidth = 150;
+var platformHeight = 15;
+
+/**
+ * Globals
+ */
 var $pong = document.getElementById('pong');
 var w = $pong.offsetWidth;
 var h = $pong.offsetHeight;
 var ctx = $pong.getContext('2d');
-var ballRadius = 15;
-var platformWidth = 150;
-var platformHeight = 15;
 var lifes = 3;
 var game_loop;
 
