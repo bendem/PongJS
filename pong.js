@@ -40,8 +40,8 @@ window.addEventListener('load', function() { requirejs(
             new Point(ballRadius, ballRadius),
             new Vector(.1, .3),
             ballRadius,
-            1.01,
-            5000,
+            1.02,
+            600,
             platform
         );
         var timer = new Timer('rgba(255, 255, 255, 0.8)', '1.1rem sans-serif');
