@@ -128,8 +128,10 @@ Ball.prototype = {
             this.velocity.y = Math.abs(this.velocity.y);
         } else if(this.getBottomY() + actualVelocity.y > h) {
             $pong.dispatchEvent(new Event('life_lost'));
-            this.setTopY(0);
-            this.velocity = this.originalVelocity;
+            this.position = new Point(w / 2, h / 5);
+            this.velocity = this.originalVelocity.setRotation(
+                Math.random() * 2 * Math.PI
+            );
             this.initTimes(time);
         }
 

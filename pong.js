@@ -37,8 +37,8 @@ window.addEventListener('load', function() { requirejs(
             platformHeight
         );
         var ball = new Ball(
-            new Point(ballRadius, ballRadius),
-            new Vector(.1, .3),
+            new Point(w / 2, h / 5),
+            new Vector(.1, .3).setRotation(Math.random() * 2 * Math.PI),
             ballRadius,
             1.02,
             600,
