@@ -66,10 +66,6 @@ Ball.prototype = {
     },
 
     update: function(time) {
-        // TODO Handle collision with the platform somewhere in here
-        // TODO When colliding, the velocity rotation should be set
-        //      based on the distance from the center of the platform
-
         if(!this.previousFrame) {
             // First time we only get the time (used to compute next deltas)
             this.initTimes(time);
@@ -84,7 +80,21 @@ Ball.prototype = {
         }
 
         var delta = time - this.previousFrame;
+        this.previousFrame = time;
+
         var actualVelocity = this.velocity.multiply(delta);
+
+        // TODO When colliding, the velocity rotation should be set
+        //      based on the distance from the center of the platform
+        if(actualVelocity.y > 0) {
+            if(this.getBottomY() + actualVelocity.y >= platform.getTopY()
+                    && this.getLeftX() < platform.getRightX()
+                    && this.getRightX() > platform.getLeftX()) {
+                console.debug('collision');
+                this.velocity.y *= -1;
+                actualVelocity.y *= -1;
+            }
+        }
 
         // TODO Don't just reverse the velocity. Bounce against the wall!
         // -------
@@ -123,7 +133,6 @@ Ball.prototype = {
         }
 
         this.position.add(actualVelocity);
-        this.previousFrame = time;
     },
 
     containerWidthChanged: function(width) {
