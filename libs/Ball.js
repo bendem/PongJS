@@ -80,7 +80,6 @@ Ball.prototype = {
         if(time - this.lastVelocityIncrease > this.velocityIncreaseDelay) {
             this.velocity = this.velocity.multiply(this.velocityIncreaseRate);
             this.lastVelocityIncrease = time;
-            console.debug('Increasing velocity: ' + this.velocity.getLength());
         }
 
         var delta = time - this.previousFrame;
