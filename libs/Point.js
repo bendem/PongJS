@@ -3,7 +3,7 @@
 var Point = function(x, y) {
     this.x = x;
     this.y = y;
-}
+};
 
 Point.prototype = {
     add: function(vector) {
@@ -14,4 +14,4 @@ Point.prototype = {
         this.y += vector.y;
         return this;
     }
-}
+};

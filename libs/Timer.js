@@ -13,25 +13,26 @@ var Timer = function(style, font) {
     document.querySelector('body').appendChild($span);
     this.fontHeight = $span.offsetHeight;
     $span.remove();
-}
+};
 
-Timer.prototype.draw = function(ctx) {
-    ctx.font = this.font;
-    ctx.fillStyle = this.style;
-    var dimensions = ctx.measureText('0');
-    ctx.fillText(
-        this.timer,
-        dimensions.width,
-        this.fontHeight
-    );
-}
-
-Timer.prototype.update = function(now) {
-    if(this.start == 0) {
-        this.start = now;
+Timer.prototype = {
+    draw: function(ctx) {
+        ctx.font = this.font;
+        ctx.fillStyle = this.style;
+        var dimensions = ctx.measureText('0');
+        ctx.fillText(
+            this.timer,
+            dimensions.width,
+            this.fontHeight
+        );
     }
-    this.timer = Math.round((now - this.start) / 1000);
-}
+    , update: function(now) {
+        if(this.start === 0) {
+            this.start = now;
+        }
+        this.timer = Math.round((now - this.start) / 1000);
+    }
 
-Timer.prototype.containerWidthChanged = function() {}
-Timer.prototype.containerHeightChanged = function() {}
+    , containerWidthChanged: function() {}
+    , containerHeightChanged: function() {}
+};

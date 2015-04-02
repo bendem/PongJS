@@ -29,50 +29,66 @@ window.addEventListener('load', function() { requirejs(
          */
         // TODO Maybe make ball and platform extend Entity (they got a bunch of stuff in common)?
         var platform = new Platform(
-            new Point(
-                w / 2 - platformWidth / 2,
-                h - platformHeight
-            ),
-            platformWidth,
-            platformHeight
-        );
-        var ball = new Ball(
-            new Point(w / 2, h / 5),
-            new Vector(.1, .3).setRotation(Math.random() * 2 * Math.PI),
-            ballRadius,
-            1.02,
-            600,
-            platform
-        );
-        var timer = new Timer('rgba(255, 255, 255, 0.8)', '1.1rem sans-serif');
-        var objects = [
-            ball,
-            platform,
-            timer
-        ];
+                new Point(
+                    w / 2 - platformWidth / 2,
+                    h - platformHeight
+                ),
+                platformWidth,
+                platformHeight
+            )
+            , ball = new Ball(
+                new Point(w / 2, h / 5),
+                new Vector(0.1, 0.3).setRotation(Math.random() * 2 * Math.PI),
+                ballRadius,
+                1.02,
+                600,
+                platform
+            )
+            , timer = new Timer('rgba(255, 255, 255, 0.8)', '1.1rem sans-serif')
+            , objects = [
+                ball,
+                platform,
+                timer
+            ]
+            , sizeChangedHandler = function() {
+                if($pong.offsetWidth !== w) {
+                    objects.forEach(function(object) {
+                        object.containerWidthChanged($pong.offsetWidth);
+                    });
+                }
+                if($pong.offsetHeight !== h) {
+                    objects.forEach(function(object) {
+                        object.containerHeightChanged($pong.offsetHeight);
+                    });
+                }
+
+                w = $pong.offsetWidth;
+                h = $pong.offsetHeight;
+                $pong.width = w;
+                $pong.height = h;
+                // Force redrawing to prevent black frames
+                $pong.dispatchEvent(new CustomEvent('draw', { detail: ctx }));
+            }
+            , drawLifes = function(ctx) {
+                var i;
+                ctx.beginPath();
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                for(i = 0; i < lifes; i++) {
+                    ctx.arc(
+                        w - 15,
+                        22 * i + 15,
+                        7,
+                        0,
+                        2 * Math.PI
+                    );
+                }
+                ctx.fill();
+            }
+            ;
 
         $pong.width = w;
         $pong.height = h;
 
-        var sizeChangedHandler = function(e) {
-            if($pong.offsetWidth != w) {
-                objects.forEach(function(object, _) {
-                    object.containerWidthChanged($pong.offsetWidth);
-                });
-            }
-            if($pong.offsetHeight != h) {
-                objects.forEach(function(object, _) {
-                    object.containerHeightChanged($pong.offsetHeight);
-                });
-            }
-
-            w = $pong.offsetWidth;
-            h = $pong.offsetHeight;
-            $pong.width = w;
-            $pong.height = h;
-            // Force redrawing to prevent black frames
-            $pong.dispatchEvent(new CustomEvent('draw', { detail: ctx }));
-        }
         window.addEventListener('resize', sizeChangedHandler);
         window.addEventListener('deviceorientation', sizeChangedHandler);
 
@@ -88,32 +104,17 @@ window.addEventListener('load', function() { requirejs(
             platform.move(e.changedTouches[0].clientX - $pong.offsetLeft);
         }, false);
 
-        var drawLifes = function(ctx) {
-            ctx.beginPath();
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            for(var i = 0; i < lifes; i++) {
-                ctx.arc(
-                    w - 15,
-                    22 * i + 15,
-                    7,
-                    0,
-                    2 * Math.PI
-                );
-            }
-            ctx.fill();
-        }
-
         $pong.addEventListener('draw', function(e) {
             var ctx = e.detail;
             ctx.clearRect(0, 0, w, h);
-            objects.forEach(function(object, _) {
+            objects.forEach(function(object) {
                 object.draw(ctx);
             });
             drawLifes(ctx);
         });
 
         $pong.addEventListener('update', function(e) {
-            objects.forEach(function(object, _) {
+            objects.forEach(function(object) {
                 object.update(e.detail);
             });
         });
@@ -141,4 +142,4 @@ window.addEventListener('load', function() { requirejs(
             $pong.dispatchEvent(new CustomEvent('update', { detail: Date.now() }));
         }, 1000/fps);
     }
-)});
+); });

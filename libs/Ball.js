@@ -24,7 +24,7 @@ var Ball = function(position, velocity, radius,
     this.lastVelocityIncrease = 0;
     // Time at which the ball got last updated
     this.previousFrame = 0;
-}
+};
 
 Ball.prototype = {
     // Get bounds of the ball
@@ -98,8 +98,8 @@ Ball.prototype = {
                 var platformCenter = this.platform.getLeftX() + halfPlatform;
                 var distance = Math.abs(this.position.x - platformCenter);
 
-                // Limit the rotation to .7 %
-                var percent = Math.min(.7, distance / halfPlatform);
+                // Limit the rotation to 0.7 %
+                var percent = Math.min(0.7, distance / halfPlatform);
                 var rotation = 3 * half_pi;
                 if(this.position.x < platformCenter) {
                     rotation -= percent * half_pi;
@@ -149,4 +149,4 @@ Ball.prototype = {
             this.setBottomY(height);
         }
     }
-}
+};
