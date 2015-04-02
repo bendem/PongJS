@@ -69,9 +69,9 @@ Ball.prototype = {
         this.previousFrame = time;
     },
 
-    update: function(time) {
+    update: function(time, objects) {
+        // First time we only get the time (used to compute next deltas)
         if(!this.previousFrame) {
-            // First time we only get the time (used to compute next deltas)
             this.initTimes(time);
             return;
         }
@@ -87,29 +87,28 @@ Ball.prototype = {
 
         var actualVelocity = this.velocity.multiply(delta);
 
-        // Collision with the platform
-        if(actualVelocity.y > 0) {
-            if(this.getBottomY() + actualVelocity.y >= this.platform.getTopY()
-                    && this.getLeftX() < this.platform.getRightX()
-                    && this.getRightX() > this.platform.getLeftX()) {
-                // Set the velocity rotation based on where the ball hit the platform
-                var halfPlatform = this.platform.width / 2;
-                var platformCenter = this.platform.getLeftX() + halfPlatform;
-                var distance = Math.abs(this.position.x - platformCenter);
+        // Collision with the plateform
+        if(actualVelocity.y > 0
+                && this.getBottomY() + actualVelocity.y >= this.platform.getTopY()
+                && this.getLeftX() < this.platform.getRightX()
+                && this.getRightX() > this.platform.getLeftX()) {
+            // Set the velocity rotation based on where the ball hit the platform
+            var halfPlatform = this.platform.width / 2;
+            var platformCenter = this.platform.getLeftX() + halfPlatform;
+            var distance = Math.abs(this.position.x - platformCenter);
 
-                // Limit the rotation to 0.7 %
-                var percent = Math.min(0.7, distance / halfPlatform);
-                var rotation = 3 * half_pi;
-                if(this.position.x < platformCenter) {
-                    rotation -= percent * half_pi;
-                } else {
-                    rotation += percent * half_pi;
-                }
-                this.velocity = this.velocity.setRotation(rotation);
-
-                // Recompute the velocity
-                actualVelocity = this.velocity.multiply(delta);
+            // Limit the rotation to 0.7 %
+            var percent = Math.min(0.7, distance / halfPlatform);
+            var rotation = 3 * half_pi;
+            if(this.position.x < platformCenter) {
+                rotation -= percent * half_pi;
+            } else {
+                rotation += percent * half_pi;
             }
+            this.velocity = this.velocity.setRotation(rotation);
+
+            // Recompute the velocity
+            actualVelocity = this.velocity.multiply(delta);
         }
 
         // TODO Don't just reverse the velocity. Bounce against the wall!

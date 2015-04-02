@@ -115,7 +115,7 @@ window.addEventListener('load', function() { requirejs(
 
         $pong.addEventListener('update', function(e) {
             objects.forEach(function(object) {
-                object.update(e.detail);
+                object.update(e.detail, objects);
             });
         });
 
