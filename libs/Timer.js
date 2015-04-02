@@ -15,7 +15,7 @@ var Timer = function(style, font) {
     $span.remove();
 };
 
-Timer.prototype = {
+Timer.prototype = extend(new Entity(), {
     draw: function(ctx) {
         ctx.font = this.font;
         ctx.fillStyle = this.style;
@@ -32,7 +32,4 @@ Timer.prototype = {
         }
         this.timer = Math.round((now - this.start) / 1000);
     }
-
-    , containerWidthChanged: function() {}
-    , containerHeightChanged: function() {}
-};
+});

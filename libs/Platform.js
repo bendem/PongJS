@@ -7,7 +7,7 @@ var Platform = function(position, width, height) {
     this.height = height;
 };
 
-Platform.prototype = {
+Platform.prototype = extend(new Entity(), {
     getLeftX: function() {
         return this.position.x;
     }
@@ -59,8 +59,6 @@ Platform.prototype = {
         ctx.fill();
     }
 
-    , update: function() {}
-
     , containerWidthChanged: function(width) {
         if(this.getRightX() > width) {
             this.setRightX(width);
@@ -69,4 +67,4 @@ Platform.prototype = {
     , containerHeightChanged: function(height) {
         this.setBottomY(height - 5);
     }
-};
+});

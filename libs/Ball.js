@@ -26,7 +26,7 @@ var Ball = function(position, velocity, radius,
     this.previousFrame = 0;
 };
 
-Ball.prototype = {
+Ball.prototype = extend(new Entity(), {
     // Get bounds of the ball
     getLeftX:   function() { return this.position.x - this.radius; },
     getRightX:  function() { return this.position.x + this.radius; },
@@ -147,4 +147,4 @@ Ball.prototype = {
             this.setBottomY(height);
         }
     }
-};
+});

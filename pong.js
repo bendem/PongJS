@@ -8,6 +8,15 @@ var half_pi = Math.PI / 2;
 var ballRadius = 15;
 var platformWidth = 150;
 var platformHeight = 15;
+var libs = [
+    'libs/Vector',
+    'libs/Point',
+    'libs/Entity',
+    'libs/Ball',
+    'libs/Platform',
+    'libs/LostText',
+    'libs/Timer'
+];
 
 /**
  * Globals
@@ -19,15 +28,23 @@ var ctx = $pong.getContext('2d');
 var lifes = 3;
 var game_loop;
 
+// Add all properties of an object to another
+// (Usefull to extend the prototype of an object)
+function extend(obj, props) {
+    for(var prop in props) {
+        obj[prop] = props[prop];
+    }
+    return obj;
+}
+
 // I don't want a single monster file, but this is meant for gh-pages
 // so yeah.
 window.addEventListener('load', function() { requirejs(
-    ['libs/Vector', 'libs/Point', 'libs/Ball', 'libs/Platform', 'libs/LostText', 'libs/Timer'],
+    libs,
     function() {
         /**
          * Actual code
          */
-        // TODO Maybe make ball and platform extend Entity (they got a bunch of stuff in common)?
         var platform = new Platform(
                 new Point(
                     w / 2 - platformWidth / 2,
