@@ -79,8 +79,7 @@ window.addEventListener('load', function() { requirejs(
                 new Vector(0.1, 0.3).setRotation(Math.random() * 2 * Math.PI),
                 ballRadius,
                 1.02,
-                600,
-                platform
+                600
             )
             , timer = new Timer(
                 new Point(0, 0),

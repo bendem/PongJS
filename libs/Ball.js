@@ -7,7 +7,7 @@ var isBetween = function(x, x1, x2) {
 }
 
 var Ball = function(position, velocity, radius,
-        velocityIncreaseRate, velocityIncreaseDelay, platform) {
+        velocityIncreaseRate, velocityIncreaseDelay) {
     Entity.call(this, position)
     // Velocity of the ball (in unit per ms)
     this.velocity = velocity;
@@ -17,8 +17,6 @@ var Ball = function(position, velocity, radius,
     this.velocityIncreaseRate = velocityIncreaseRate;
     // Delay between velocity increase
     this.velocityIncreaseDelay = velocityIncreaseDelay;
-    // The plateform (needed for collision handling)
-    this.platform = platform;
 
     // Original velocity
     this.originalVelocity = this.velocity.clone();
