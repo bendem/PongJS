@@ -59,7 +59,7 @@ window.addEventListener('load', function() { requirejs(
         var platform = new Platform(
                 new Point(
                     w / 2 - platformWidth / 2,
-                    h - platformHeight
+                    h - platformHeight - 5
                 ),
                 platformWidth,
                 platformHeight

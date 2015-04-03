@@ -56,7 +56,18 @@ extend(Ball, Entity, {
     }
 
     , draw: function(ctx) {
-        // TODO Shadow
+        // Shadow
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        ctx.arc(
+            this.position.x + 1,
+            this.position.y + 1,
+            this.radius + 1,
+            0,
+            2 * Math.PI
+        );
+        ctx.fill();
+
         ctx.beginPath();
         ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
         ctx.arc(

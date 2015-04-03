@@ -49,7 +49,17 @@ extend(Platform, SolidEntity, {
     }
 
     , draw: function(ctx) {
-        // TODO Shadow
+        // Shadow
+        ctx.beginPath();
+        ctx.rect(
+            this.position.x,
+            this.position.y,
+            this.width + 2,
+            this.height + 2
+        );
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.fill();
+
         ctx.beginPath();
         ctx.rect(
             this.position.x,

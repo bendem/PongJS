@@ -18,9 +18,18 @@ var Timer = function(position, style, font) {
 
 extend(Timer, Entity, {
     draw: function(ctx) {
-        ctx.font = this.font;
-        ctx.fillStyle = this.style;
         var dimensions = ctx.measureText('0');
+        ctx.font = this.font;
+
+        // Shadow
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        ctx.fillText(
+            this.timer,
+            this.position.x + dimensions.width + 1,
+            this.position.y + this.fontHeight + 1
+        );
+
+        ctx.fillStyle = this.style;
         ctx.fillText(
             this.timer,
             this.position.x + dimensions.width,
