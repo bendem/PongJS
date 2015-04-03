@@ -20,7 +20,6 @@ var libs = [
     'libs/Timer',
     'libs/Wall'
 ];
-var emptyFunction = function() {};
 
 var Direction = Object.freeze({
     Up: 0,
@@ -39,14 +38,21 @@ var ctx = $pong.getContext('2d');
 var lifes = 3;
 var game_loop;
 
+/**
+ * Utility functions
+ */
 // Add all properties of an object to another
 // (Usefull to extend the prototype of an object)
-function extend(clazz, parent, props) {
+var extend = function(clazz, parent, props) {
     clazz.prototype = Object.create(parent.prototype);
     for(var prop in props) {
         clazz.prototype[prop] = props[prop];
     }
-}
+};
+var random = function(min, max) {
+    return Math.random() * (max - min) + min;
+};
+var emptyFunction = function() {};
 
 // I don't want a single monster file, but this is meant for gh-pages
 // so yeah.

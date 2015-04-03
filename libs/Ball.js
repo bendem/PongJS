@@ -170,10 +170,12 @@ extend(Ball, Entity, {
         if(this.getBottomY() + actualVelocity.y > h) {
             $pong.dispatchEvent(new Event('life_lost'));
             this.position = new Point(w / 2, h / 5);
-            // TODO Prevent that from being too vertical
-            this.velocity = this.originalVelocity.setRotation(
-                Math.random() * 2 * Math.PI
-            );
+
+            var rotation = random(Math.PI / 4, 3 / 4 * Math.PI);
+            if(Math.random() > 0.5) {
+                rotation = -rotation;
+            }
+            this.velocity = this.originalVelocity.setRotation(rotation);
             this.initTimes(time);
         }
 
