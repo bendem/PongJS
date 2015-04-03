@@ -1,5 +1,9 @@
 "use strict";
 
+// TODO Reset button
+// TODO Config like http://workshop.chromeexperiments.com/examples/gui/
+// TODO Move away from requirejs at some point
+
 /**
  * Constants
  */
