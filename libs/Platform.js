@@ -48,6 +48,7 @@ Platform.prototype = extend(new Entity(), {
     }
 
     , draw: function(ctx) {
+        // TODO Shadow
         ctx.beginPath();
         ctx.rect(
             this.position.x,

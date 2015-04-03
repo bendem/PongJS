@@ -28,29 +28,30 @@ var Ball = function(position, velocity, radius,
 
 Ball.prototype = extend(new Entity(), {
     // Get bounds of the ball
-    getLeftX:   function() { return this.position.x - this.radius; },
-    getRightX:  function() { return this.position.x + this.radius; },
-    getTopY:    function() { return this.position.y - this.radius; },
-    getBottomY: function() { return this.position.y + this.radius; },
+    getLeftX:   function() { return this.position.x - this.radius; }
+    , getRightX:  function() { return this.position.x + this.radius; }
+    , getTopY:    function() { return this.position.y - this.radius; }
+    , getBottomY: function() { return this.position.y + this.radius; }
 
-    setLeftX: function(x) {
+    , setLeftX: function(x) {
         this.position.x  = x + this.radius;
         return this;
-    },
-    setRightX: function(x) {
+    }
+    , setRightX: function(x) {
         this.position.x = x - this.radius;
         return this;
-    },
-    setTopY: function(y) {
+    }
+    , setTopY: function(y) {
         this.position.y = y + this.radius;
         return this;
-    },
-    setBottomY: function(y) {
+    }
+    , setBottomY: function(y) {
         this.position.y = y - this.radius;
         return this;
-    },
+    }
 
-    draw: function(ctx) {
+    , draw: function(ctx) {
+        // TODO Shadow
         ctx.beginPath();
         ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
         ctx.arc(
@@ -61,15 +62,15 @@ Ball.prototype = extend(new Entity(), {
             2 * Math.PI
         );
         ctx.fill();
-    },
+    }
 
-    initTimes: function(time) {
+    , initTimes: function(time) {
         this.firstFrame = time;
         this.lastVelocityIncrease = time;
         this.previousFrame = time;
-    },
+    }
 
-    update: function(time, objects) {
+    , update: function(time, objects) {
         // First time we only get the time (used to compute next deltas)
         if(!this.previousFrame) {
             this.initTimes(time);
@@ -134,15 +135,15 @@ Ball.prototype = extend(new Entity(), {
         }
 
         this.position.add(actualVelocity);
-    },
+    }
 
-    containerWidthChanged: function(width) {
+    , containerWidthChanged: function(width) {
         if(this.getRightX() > width) {
             this.setRightX(width);
         }
-    },
+    }
 
-    containerHeightChanged: function(height) {
+    , containerHeightChanged: function(height) {
         if(this.getBottomY() > height) {
             this.setBottomY(height);
         }
