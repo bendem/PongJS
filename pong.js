@@ -12,11 +12,22 @@ var libs = [
     'libs/Vector',
     'libs/Point',
     'libs/Entity',
+    'libs/SolidEntity',
     'libs/Ball',
-    'libs/Platform',
+    'libs/LifeCounter',
     'libs/LostText',
-    'libs/Timer'
+    'libs/Platform',
+    'libs/Timer',
+    'libs/Wall'
 ];
+var emptyFunction = function() {};
+
+var Direction = Object.freeze({
+    Up: 0,
+    Left: 1,
+    Down: 2,
+    Right: 3
+});
 
 /**
  * Globals
@@ -61,11 +72,24 @@ window.addEventListener('load', function() { requirejs(
                 600,
                 platform
             )
-            , timer = new Timer('rgba(255, 255, 255, 0.8)', '1.1rem sans-serif')
+            , timer = new Timer(
+                new Point(0, 0),
+                'rgba(255, 255, 255, 0.8)',
+                '1.1rem sans-serif'
+            )
+            , lifeCounter = new LifeCounter(
+                new Point(w - 15, 15),
+                lifes,
+                22
+            )
             , objects = [
                 ball,
                 platform,
-                timer
+                timer,
+                lifeCounter,
+                new Wall(new Point(0, 0), false, true),
+                new Wall(new Point(0, 0), true, false),
+                new Wall(new Point(w, 0), false, true),
             ]
             , sizeChangedHandler = function() {
                 if($pong.offsetWidth !== w) {
@@ -85,21 +109,6 @@ window.addEventListener('load', function() { requirejs(
                 $pong.height = h;
                 // Force redrawing to prevent black frames
                 $pong.dispatchEvent(new CustomEvent('draw', { detail: ctx }));
-            }
-            , drawLifes = function(ctx) {
-                var i;
-                ctx.beginPath();
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                for(i = 0; i < lifes; i++) {
-                    ctx.arc(
-                        w - 15,
-                        22 * i + 15,
-                        7,
-                        0,
-                        2 * Math.PI
-                    );
-                }
-                ctx.fill();
             }
             ;
 
@@ -127,7 +136,6 @@ window.addEventListener('load', function() { requirejs(
             objects.forEach(function(object) {
                 object.draw(ctx);
             });
-            drawLifes(ctx);
         });
 
         $pong.addEventListener('update', function(e) {
@@ -137,7 +145,7 @@ window.addEventListener('load', function() { requirejs(
         });
 
         $pong.addEventListener('life_lost', function() {
-            if(lifes-- <= 0) {
+            if(lifeCounter.count-- <= 0) {
                 $pong.dispatchEvent(new Event('game_lost'));
             }
         });

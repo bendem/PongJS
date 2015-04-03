@@ -1,6 +1,7 @@
 "use strict";
 
-var Timer = function(style, font) {
+var Timer = function(position, style, font) {
+    Entity.call(this, position);
     this.style = style;
     this.font = font;
     this.start = 0;
@@ -22,8 +23,8 @@ extend(Timer, Entity, {
         var dimensions = ctx.measureText('0');
         ctx.fillText(
             this.timer,
-            dimensions.width,
-            this.fontHeight
+            this.position.x + dimensions.width,
+            this.position.y + this.fontHeight
         );
     }
     , update: function(now) {

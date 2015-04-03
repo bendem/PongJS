@@ -1,9 +1,14 @@
 "use strict";
 
+var isBetween = function(x, x1, x2) {
+    var xMin = Math.min(x1, x2)
+      , xMax = Math.max(x1, x2);
+    return x > xMin && x < xMax;
+}
+
 var Ball = function(position, velocity, radius,
         velocityIncreaseRate, velocityIncreaseDelay, platform) {
-    // Center of the ball
-    this.position = position;
+    Entity.call(this, position)
     // Velocity of the ball (in unit per ms)
     this.velocity = velocity;
     // Radius of the ball
@@ -88,46 +93,73 @@ extend(Ball, Entity, {
 
         var actualVelocity = this.velocity.multiply(delta);
 
-        // Collision with the plateform
-        if(actualVelocity.y > 0
-                && this.getBottomY() + actualVelocity.y >= this.platform.getTopY()
-                && this.getLeftX() < this.platform.getRightX()
-                && this.getRightX() > this.platform.getLeftX()) {
-            // Set the velocity rotation based on where the ball hit the platform
-            var halfPlatform = this.platform.width / 2;
-            var platformCenter = this.platform.getLeftX() + halfPlatform;
-            var distance = Math.abs(this.position.x - platformCenter);
-
-            // Limit the rotation to 0.7 %
-            var percent = Math.min(0.7, distance / halfPlatform);
-            var rotation = 3 * half_pi;
-            if(this.position.x < platformCenter) {
-                rotation -= percent * half_pi;
-            } else {
-                rotation += percent * half_pi;
+        var goingUp = this.velocity.y < 0;
+        var goingLeft = this.velocity.x < 0;
+        var self = this;
+        objects.forEach(function(obj) {
+            if(obj == self || !obj.solid) {
+                // Don't handle collision with yourself or non solid objects
+                return;
             }
-            this.velocity = this.velocity.setRotation(rotation);
+
+            // Horizontal collision
+            if(goingLeft
+                    // Will pass the object in this frame
+                    && isBetween(
+                        obj.getRightX(),
+                        self.getLeftX(),
+                        self.getLeftX() + actualVelocity.x
+                    )
+                    // Will actually go through
+                    && self.getBottomY() > obj.getTopY()
+                    && self.getTopY() < obj.getBottomY()) {
+                obj.handleCollision(self, Direction.Left);
+            } else if(!goingLeft
+                    // Will pass the object in this frame
+                    && isBetween(
+                        obj.getLeftX(),
+                        self.getRightX(),
+                        self.getRightX() + actualVelocity.x
+                    )
+                    // Will actually go through
+                    && self.getBottomY() > obj.getTopY()
+                    && self.getTopY() < obj.getBottomY()) {
+                obj.handleCollision(self, Direction.Right);
+            }
+
+            // Vertical collision
+            if(goingUp
+                    // Will pass the object in this frame
+                    && isBetween(
+                        obj.getBottomY(),
+                        self.getTopY(),
+                        self.getTopY() + actualVelocity.y
+                    )
+                    // Will actually go through
+                    && self.getRightX() > obj.getLeftX()
+                    && self.getLeftX() < obj.getRightX()) {
+                obj.handleCollision(self, Direction.Up);
+            } else if(!goingUp
+                    // Will pass the object in this frame
+                    && isBetween(
+                        obj.getTopY(),
+                        self.getBottomY(),
+                        self.getBottomY() + actualVelocity.y
+                    )
+                    // Will actually go through
+                    && self.getRightX() > obj.getLeftX()
+                    && self.getLeftX() < obj.getRightX()) {
+                obj.handleCollision(self, Direction.Down);
+            }
 
             // Recompute the velocity
-            actualVelocity = this.velocity.multiply(delta);
-        }
+            actualVelocity = self.velocity.multiply(delta);
+        });
 
-        // TODO Don't just reverse the velocity. Bounce against the wall!
-        // -------
-        //   /\
-        //  /  o
-        // /
-        if(this.getLeftX() + actualVelocity.x < 0) {
-            this.velocity.x = Math.abs(this.velocity.x);
-        } else if(this.getRightX() + actualVelocity.x > w) {
-            this.velocity.x = -Math.abs(this.velocity.x);
-        }
-
-        if(this.getTopY() + actualVelocity.y < 0) {
-            this.velocity.y = Math.abs(this.velocity.y);
-        } else if(this.getBottomY() + actualVelocity.y > h) {
+        if(this.getBottomY() + actualVelocity.y > h) {
             $pong.dispatchEvent(new Event('life_lost'));
             this.position = new Point(w / 2, h / 5);
+            // TODO Prevent that from being too vertical
             this.velocity = this.originalVelocity.setRotation(
                 Math.random() * 2 * Math.PI
             );

@@ -1,22 +1,13 @@
 "use strict";
 
-var Entity = function() {};
+var Entity = function(position) {
+    this.position = position;
+    this.solid = false;
+};
 
 Entity.prototype = {
-    getBoundingBox: function() {
-        /**
-         *
-         */
-        if(this.hasOwnProperty('getLeftX')
-                && this.hasOwnProperty('getRightX')
-                && this.hasOwnProperty('getTopY')
-                && this.hasOwnProperty('getBottomY')) {
-            return this;
-        }
-        throw new Error('Should override');
-    }
-    , draw: function() {}
-    , update: function() {}
-    , containerWidthChanged: function() {}
-    , containerHeightChanged: function() {}
+    draw: emptyFunction
+    , update: emptyFunction
+    , containerWidthChanged: emptyFunction
+    , containerHeightChanged: emptyFunction
 };
