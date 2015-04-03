@@ -30,11 +30,11 @@ var game_loop;
 
 // Add all properties of an object to another
 // (Usefull to extend the prototype of an object)
-function extend(obj, props) {
+function extend(clazz, parent, props) {
     for(var prop in props) {
-        obj[prop] = props[prop];
+        clazz.prototype[prop] = props[prop];
     }
-    return obj;
+    Object.setPrototypeOf(clazz.prototype, parent.prototype);
 }
 
 // I don't want a single monster file, but this is meant for gh-pages

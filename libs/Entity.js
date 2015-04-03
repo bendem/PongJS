@@ -13,7 +13,7 @@ Entity.prototype = {
                 && this.hasOwnProperty('getBottomY')) {
             return this;
         }
-        throw new Exception('Should override');
+        throw new Error('Should override');
     }
     , draw: function() {}
     , update: function() {}

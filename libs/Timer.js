@@ -15,7 +15,7 @@ var Timer = function(style, font) {
     $span.remove();
 };
 
-Timer.prototype = extend(new Entity(), {
+extend(Timer, Entity, {
     draw: function(ctx) {
         ctx.font = this.font;
         ctx.fillStyle = this.style;

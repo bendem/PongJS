@@ -7,7 +7,7 @@ var Platform = function(position, width, height) {
     this.height = height;
 };
 
-Platform.prototype = extend(new Entity(), {
+extend(Platform, Entity, {
     getLeftX: function() {
         return this.position.x;
     }

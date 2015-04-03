@@ -6,7 +6,7 @@ var LostText = function(text, style, font) {
     this.font = font;
 };
 
-LostText.prototype = extend(new Entity(), {
+extend(LostText, Entity, {
     draw: function(ctx) {
         ctx.font = this.font;
         ctx.fillStyle = this.style;
