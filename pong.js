@@ -45,17 +45,35 @@ var game_loop;
 /**
  * Utility functions
  */
-// Add all properties of an object to another
-// (Usefull to extend the prototype of an object)
+/**
+ * Prototypal inheritance: Modifies the prototype of the child
+ * object to chain the parent object and adds the provided properties
+ * to the new prototype.
+ *
+ * @param  Function The child object
+ * @param  Function The parent object
+ * @param  Object   The new prototype of the child object
+ */
 var extend = function(clazz, parent, props) {
     clazz.prototype = Object.create(parent.prototype);
     for(var prop in props) {
         clazz.prototype[prop] = props[prop];
     }
 };
+
+/**
+ * Do I need to explain random
+ * @param  Number Min bound
+ * @param  Number Max bound
+ * @return Number The random
+ */
 var random = function(min, max) {
     return Math.random() * (max - min) + min;
 };
+
+/**
+ * Y u read this?
+ */
 var emptyFunction = function() {};
 
 // I don't want a single monster file, but this is meant for gh-pages
@@ -112,8 +130,10 @@ window.addEventListener('load', function() { requirejs(
                     });
                 }
 
+                // Update globals
                 w = $pong.offsetWidth;
                 h = $pong.offsetHeight;
+                // Fix canvas size
                 $pong.width = w;
                 $pong.height = h;
                 // Force redrawing to prevent black frames
@@ -121,6 +141,7 @@ window.addEventListener('load', function() { requirejs(
             }
             ;
 
+        // Force canvas to take the size it actually takes.
         $pong.width = w;
         $pong.height = h;
 
@@ -130,6 +151,8 @@ window.addEventListener('load', function() { requirejs(
         window.addEventListener('mousemove', function(e) {
             platform.move(e.clientX - $pong.offsetLeft);
         });
+
+        // TODO Keyboard control?
 
         // Touch handling
         window.addEventListener('touchmove', function(e) {
