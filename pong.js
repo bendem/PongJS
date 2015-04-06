@@ -14,6 +14,7 @@ var platformHeight = 15;
 var libs = [
     'libs/Vector',
     'libs/Point',
+    'libs/Positions',
     'libs/Entity',
     'libs/SolidEntity',
     'libs/Ball',
@@ -85,8 +86,9 @@ window.addEventListener('load', function() { requirejs(libs, function() {
     var platform = new Platform(
         new Point(
             w / 2 - platformWidth / 2,
-            h - platformHeight - 5
+            5 + platformHeight
         ),
+        Anchor.BottomLeft,
         platformWidth,
         platformHeight
     );
@@ -99,13 +101,15 @@ window.addEventListener('load', function() { requirejs(libs, function() {
     );
     var timer = new Timer(
         new Point(0, 0),
+        Anchor.TopLeft,
         'rgba(255, 255, 255, 0.8)',
         '1.1rem sans-serif'
     );
     var lifeCounter = new LifeCounter(
-        new Point(w - 15, 15),
-        lifes,
-        22
+        new Point(15, 15),
+        Anchor.TopRight,
+        Direction.Down,
+        lifes
     );
     var sizeChangedHandler = function() {
         if($pong.offsetWidth !== w) {

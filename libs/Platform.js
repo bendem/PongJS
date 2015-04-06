@@ -1,8 +1,8 @@
 "use strict";
 
 // position: Point containing the top left corner position
-var Platform = function(position, width, height) {
-    Entity.call(this, position);
+var Platform = function(position, anchor, width, height) {
+    Entity.call(this, position, anchor);
     SolidEntity.call(this);
     this.width = width;
     this.height = height;

@@ -1,7 +1,7 @@
 "use strict";
 
-var Timer = function(position, style, font) {
-    Entity.call(this, position);
+var Timer = function(position, anchor, style, font) {
+    Entity.call(this, position, anchor);
     this.style = style;
     this.font = font;
     this.start = 0;
