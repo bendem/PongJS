@@ -112,21 +112,16 @@ window.addEventListener('load', function() { requirejs(libs, function() {
             objects.forEach(function(object) {
                 object.containerWidthChanged($pong.offsetWidth);
             });
+            w = $pong.offsetWidth;
+            $pong.width = w;
         }
         if($pong.offsetHeight !== h) {
             objects.forEach(function(object) {
                 object.containerHeightChanged($pong.offsetHeight);
             });
+            h = $pong.offsetHeight;
+            $pong.height = h;
         }
-
-        // Update globals
-        w = $pong.offsetWidth;
-        h = $pong.offsetHeight;
-        // Fix canvas size
-        $pong.width = w;
-        $pong.height = h;
-        // Force redrawing to prevent black frames
-        $pong.dispatchEvent(new CustomEvent('draw', { detail: ctx }));
     };
 
     // Register the objects
