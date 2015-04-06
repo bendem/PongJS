@@ -55,7 +55,7 @@ Entity.prototype = {
      * @param Number The new width
      */
     , containerWidthChanged: function(width) {
-        if(this.anchor && this.anchor != Anchor.TopLeft) {
+        if(this.anchor && this.anchor.hPos != HorizontalPosition.Left) {
             this.position = this.anchor.convertPoint(this.relativePosition, width);
         }
     }
@@ -70,7 +70,7 @@ Entity.prototype = {
      * @param Number The new height
      */
     , containerHeightChanged: function(height) {
-        if(this.anchor && this.anchor != Anchor.TopLeft) {
+        if(this.anchor && this.anchor.vPos != VerticalPosition.Top) {
             this.position = this.anchor.convertPoint(this.relativePosition, null, height);
         }
     }

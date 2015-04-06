@@ -4,8 +4,8 @@ var LifeCounter = function(position, anchor, direction, count, radius, spacing) 
     Entity.call(this, position, anchor);
     this.count = count;
     this.direction = direction;
-    this.radius = radius | 7;
-    this.spacing = spacing | this.radius * 3;
+    this.radius = radius || 7;
+    this.spacing = spacing || this.radius * 3;
 }
 
 extend(LifeCounter, Entity, {

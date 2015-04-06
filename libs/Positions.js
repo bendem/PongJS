@@ -38,8 +38,8 @@ Position.prototype = {
             return new Point(point.x, point.y);
         }
 
-        var width  = p_width | w;
-        var height = p_height | h;
+        var width  = p_width || w;
+        var height = p_height || h;
         var x, y;
 
         switch(this.hPos) {
