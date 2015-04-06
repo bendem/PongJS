@@ -109,7 +109,7 @@ window.addEventListener('load', function() { requirejs(libs, function() {
     );
     var platformAi = new PlatformAI(
         new Point(w / 2 - platformWidth / 2, 5),
-        Anchor.TopRight,
+        Anchor.TopLeft,
         platformWidth,
         platformHeight
     );
