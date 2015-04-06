@@ -72,27 +72,46 @@ extend(Platform, SolidEntity, {
     }
     , handleCollision: function(ball, direction) {
         // Set the velocity rotation based on where the ball hit the platform
-        var halfPlatform = this.width / 2;
-        var platformCenter = this.getLeftX() + halfPlatform;
-        var distance = Math.abs(ball.position.x - platformCenter);
+        var halfPlatform, platformCenter, distance, ballPos;
+        if(direction % 2 == 0) { // horizontal
+            halfPlatform = this.width / 2;
+            platformCenter = this.getLeftX() + halfPlatform;
+            ballPos = ball.position.x;
+        } else {
+            halfPlatform = this.height / 2;
+            platformCenter = this.getTopY() + halfPlatform;
+            ballPos = ball.position.y;
+        }
+        distance = Math.abs(ballPos - platformCenter);
 
         // Limit the rotation to 0.7 %
         var percent = Math.min(0.7, distance / halfPlatform);
-        var rotation = 3 * half_pi;
-        if(ball.position.x < platformCenter) {
-            rotation -= percent * half_pi;
-        } else {
-            rotation += percent * half_pi;
-        }
-        ball.velocity = ball.velocity.setRotation(rotation);
-    }
 
-    , containerWidthChanged: function(width) {
-        if(this.getRightX() > width) {
-            this.setRightX(width);
+        var directionRotation;
+        switch(direction) {
+            case Direction.Right:
+                directionRotation = 0;
+                break;
+            case Direction.Up:
+                directionRotation = 1;
+                break;
+            case Direction.Left:
+                directionRotation = 2;
+                break;
+            case Direction.Down:
+                directionRotation = 3;
+                break;
         }
-    }
-    , containerHeightChanged: function(height) {
-        this.setBottomY(height - 5);
+
+        var rotation = directionRotation * half_pi;
+        var sign = 1;
+        // Directions greater than 1 are Down and Right
+        if(ballPos < platformCenter && direction > 1
+                || ballPos > platformCenter && direction < 2) {
+            sign = -1;
+        }
+        rotation += percent * half_pi * sign;
+
+        ball.velocity = ball.velocity.setRotation(rotation);
     }
 });

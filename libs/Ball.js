@@ -1,11 +1,5 @@
 "use strict";
 
-var isBetween = function(x, x1, x2) {
-    var xMin = Math.min(x1, x2)
-      , xMax = Math.max(x1, x2);
-    return x > xMin && x < xMax;
-}
-
 var Ball = function(position, velocity, radius,
         velocityIncreaseRate, velocityIncreaseDelay) {
     Entity.call(this, position)
@@ -76,6 +70,14 @@ extend(Ball, Entity, {
             2 * Math.PI
         );
         ctx.fill();
+    }
+
+    , randomizeRotation: function() {
+        var rotation = random(Math.PI / 4, 3 / 4 * Math.PI);
+        if(Math.random() > 0.5) {
+            rotation = -rotation;
+        }
+        this.velocity = this.originalVelocity.setRotation(rotation);
     }
 
     , initTimes: function(time) {
@@ -165,16 +167,18 @@ extend(Ball, Entity, {
             actualVelocity = self.velocity.multiply(delta);
         });
 
-        if(this.getBottomY() + actualVelocity.y > h) {
-            $pong.dispatchEvent(new Event('life_lost'));
-            this.position = new Point(w / 2, h / 5);
-
-            var rotation = random(Math.PI / 4, 3 / 4 * Math.PI);
-            if(Math.random() > 0.5) {
-                rotation = -rotation;
+        if(this.getBottomY() + actualVelocity.y > h
+                || this.getTopY() + actualVelocity.y < 0) {
+            var event = 'life_lost';
+            if(this.getTopY() + actualVelocity.y < 0) {
+                event = 'ai_life_lost';
             }
-            this.velocity = this.originalVelocity.setRotation(rotation);
+
+            $pong.dispatchEvent(new Event(event));
+            this.position = new Point(w / 2, h / 5);
+            this.randomizeRotation();
             this.initTimes(time);
+            return;
         }
 
         this.position.add(actualVelocity);

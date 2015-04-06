@@ -19,8 +19,9 @@ var libs = [
     'libs/SolidEntity',
     'libs/Ball',
     'libs/LifeCounter',
-    'libs/LostText',
+    'libs/Text',
     'libs/Platform',
+    'libs/PlatformAI',
     'libs/Timer',
     'libs/Wall'
 ];
@@ -63,6 +64,20 @@ var extend = function(clazz, parent, props) {
 };
 
 /**
+ * Checks wether a number is between to other numbers.
+ *
+ * @param  Number  The number to check
+ * @param  Number  One of the bounds
+ * @param  Number  The other bound
+ * @return Boolean
+ */
+var isBetween = function(x, x1, x2) {
+    var xMin = Math.min(x1, x2)
+      , xMax = Math.max(x1, x2);
+    return x > xMin && x < xMax;
+}
+
+/**
  * Do I need to explain random
  * @param  Number Min bound
  * @param  Number Max bound
@@ -92,13 +107,20 @@ window.addEventListener('load', function() { requirejs(libs, function() {
         platformWidth,
         platformHeight
     );
+    var platformAi = new PlatformAI(
+        new Point(w / 2 - platformWidth / 2, 5),
+        Anchor.TopRight,
+        platformWidth,
+        platformHeight
+    );
     var ball = new Ball(
         new Point(w / 2, h / 5),
-        new Vector(0.1, 0.3).setRotation(Math.random() * 2 * Math.PI),
+        new Vector(0.1, 0.3),
         ballRadius,
         1.02,
         600
     );
+    ball.randomizeRotation();
     var timer = new Timer(
         new Point(0, 0),
         Anchor.TopLeft,
@@ -106,6 +128,12 @@ window.addEventListener('load', function() { requirejs(libs, function() {
         '1.1rem sans-serif'
     );
     var lifeCounter = new LifeCounter(
+        new Point(15, 15),
+        Anchor.BottomRight,
+        Direction.Up,
+        lifes
+    );
+    var aiLifeCounter = new LifeCounter(
         new Point(15, 15),
         Anchor.TopRight,
         Direction.Down,
@@ -127,15 +155,26 @@ window.addEventListener('load', function() { requirejs(libs, function() {
             $pong.height = h;
         }
     };
+    var endGameTextFactory = function(text) {
+        return new Text(
+            new Point(0, 0),
+            Anchor.MiddleMiddle,
+            text,
+            'rgba(255, 150, 150, 0.8)',
+            Alignement.Center,
+            '2rem sans-serif'
+        );
+    }
 
     // Register the objects
     objects = objects.concat([
         ball,
         platform,
+        platformAi,
         timer,
         lifeCounter,
+        aiLifeCounter,
         new Wall(new Point(0, 0), false, true),
-        new Wall(new Point(0, 0), true, false),
         new Wall(new Point(w, 0), false, true),
     ]);
 
@@ -176,20 +215,31 @@ window.addEventListener('load', function() { requirejs(libs, function() {
 
     $pong.addEventListener('life_lost', function() {
         if(lifeCounter.count-- <= 0) {
-            $pong.dispatchEvent(new Event('game_lost'));
+            $pong.dispatchEvent(new Event('user_lost_game'));
+        }
+    });
+    $pong.addEventListener('ai_life_lost', function() {
+        if(aiLifeCounter.count-- <= 0) {
+            $pong.dispatchEvent(new Event('ai_lost_game'));
         }
     });
 
-    $pong.addEventListener('game_lost', function() {
-        running = false;
-        console.log('YOU LOST BIATCH!');
-        var text = new LostText(
-            'You lose!',
-            'rgba(255, 150, 150, 0.8)',
-            '2rem sans-serif'
-        );
+    $pong.addEventListener('user_lost_game', function() {
+        var text = endGameTextFactory('You lose!');
         objects.push(text);
         text.draw(ctx);
+        $pong.dispatchEvent(new Event('game_end'));
+    });
+
+    $pong.addEventListener('ai_lost_game', function() {
+        var text = endGameTextFactory('You win!');
+        objects.push(text);
+        text.draw(ctx);
+        $pong.dispatchEvent(new Event('game_end'));
+    });
+
+    $pong.addEventListener('game_end', function() {
+        running = false;
     });
 
     var game_loop = function(time) {
