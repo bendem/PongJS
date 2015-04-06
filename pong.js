@@ -7,7 +7,6 @@
 /**
  * Constants
  */
-var fps = 60;
 var half_pi = Math.PI / 2;
 var ballRadius = 15;
 var platformWidth = 150;
@@ -40,7 +39,7 @@ var w = $pong.offsetWidth;
 var h = $pong.offsetHeight;
 var ctx = $pong.getContext('2d');
 var lifes = 3;
-var game_loop;
+var running = false;
 var objects = [];
 
 /**
@@ -183,7 +182,7 @@ window.addEventListener('load', function() { requirejs(libs, function() {
     });
 
     $pong.addEventListener('game_lost', function() {
-        clearInterval(game_loop);
+        running = false;
         console.log('YOU LOST BIATCH!');
         var text = new LostText(
             'You lose!',
@@ -194,8 +193,14 @@ window.addEventListener('load', function() { requirejs(libs, function() {
         text.draw(ctx);
     });
 
-    game_loop = setInterval(function() {
+    var game_loop = function(time) {
         $pong.dispatchEvent(new CustomEvent('draw', { detail: ctx }));
-        $pong.dispatchEvent(new CustomEvent('update', { detail: Date.now() }));
-    }, 1000/fps);
+        $pong.dispatchEvent(new CustomEvent('update', { detail: time }));
+        if(running) {
+            requestAnimationFrame(game_loop);
+        }
+    };
+
+    running = true;
+    requestAnimationFrame(game_loop);
 }); });
