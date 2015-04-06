@@ -22,7 +22,7 @@ extend(PlatformAI, Platform, {
             // Distance wanted
             Math.abs(this.ball.position.x - platformCenter),
             // Rate limiting
-            Math.abs(this.ball.velocity.multiply(now - this.previousFrame).x) * 0.9
+            Math.abs(this.ball.velocity.multiply(now - this.previousFrame).getLength()) * 0.9
         );
 
         if (platformCenter < this.ball.position.x) {
