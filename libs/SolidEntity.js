@@ -7,10 +7,6 @@ var SolidEntity = function() {
     this.solid = true;
 };
 
-var unimplementedError = function() {
-    throw Error('unimplemented method');
-};
-
 /**
  * All unimplemented methods of SolidEntity will throw an Error!
  */

@@ -54,7 +54,7 @@ var isBetween = function(x, x1, x2) {
     var xMin = Math.min(x1, x2)
       , xMax = Math.max(x1, x2);
     return x > xMin && x < xMax;
-}
+};
 
 /**
  * Do I need to explain random
@@ -70,3 +70,11 @@ var random = function(min, max) {
  * Y u read this?
  */
 var emptyFunction = function() {};
+
+/**
+ * A function that will throw an error about
+ * unimplemented thing.
+ */
+var unimplementedError = function() {
+    throw Error('unimplemented method');
+};
