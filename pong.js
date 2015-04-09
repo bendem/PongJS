@@ -7,40 +7,45 @@
 /**
  * Constants
  */
-var half_pi = Math.PI / 2;
-var ballRadius = 15;
-var platformWidth = 150;
+var half_pi        = Math.PI / 2;
+var ballRadius     = 15;
+var platformWidth  = 150;
 var platformHeight = 15;
-var libs = [
-    'libs/Vector',
+var libs           = [
+    // Needed by everything
     'libs/Point',
-    'libs/Positions',
+    'libs/Vector',
+
+    // Needed by entity implementations
     'libs/Entity',
     'libs/SolidEntity',
+
+    // Entity implementations
     'libs/Ball',
     'libs/LifeCounter',
-    'libs/Text',
     'libs/Platform',
     'libs/PlatformAI',
+    'libs/Positions',
+    'libs/Text',
     'libs/Timer',
     'libs/Wall'
 ];
 
 var Direction = Object.freeze({
-    Up: 0,
-    Left: 1,
-    Down: 2,
+    Up   : 0,
+    Left : 1,
+    Down : 2,
     Right: 3
 });
 
 /**
  * Globals
  */
-var $pong = document.getElementById('pong');
-var w = $pong.offsetWidth;
-var h = $pong.offsetHeight;
-var ctx = $pong.getContext('2d');
-var lifes = 3;
+var $pong   = document.getElementById('pong');
+var w       = $pong.offsetWidth;
+var h       = $pong.offsetHeight;
+var ctx     = $pong.getContext('2d');
+var lifes   = 3;
 var running = false;
 var objects = [];
 
