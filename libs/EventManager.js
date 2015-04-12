@@ -15,7 +15,7 @@ EventManager.prototype = {
         // Registering a handler for multiple events at once
         if(name.forEach !== undefined) {
             name.forEach(function(name) {
-                this.register(name, handler, obj);
+                this.register(name, handler, obj, native);
             }, this);
             return;
         }
