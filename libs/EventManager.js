@@ -58,7 +58,7 @@ EventManager.prototype = {
             $pong.width = w;
         }
         if($pong.offsetHeight !== h) {
-            this.handleEvent('height_changed', w);
+            this.handleEvent('height_changed', h);
             h = $pong.offsetHeight;
             $pong.height = h;
         }

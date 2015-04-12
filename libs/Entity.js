@@ -20,6 +20,10 @@ var Entity = function(position, anchor) {
     }
     this.anchor = anchor;
     this.solid = false;
+
+
+    eventManager.register('width_changed', this.containerWidthChanged, this);
+    eventManager.register('height_changed', this.containerHeightChanged, this);
 };
 
 /**
@@ -52,7 +56,7 @@ Entity.prototype = {
      *
      * @param Number The new width
      */
-    , containerWidthChanged: function(width) {
+    , containerWidthChanged: function(name, width) {
         if(this.anchor && this.anchor.hPos != HorizontalPosition.Left) {
             this.position = this.anchor.convertPoint(this.relativePosition, width);
         }
@@ -67,8 +71,9 @@ Entity.prototype = {
      *
      * @param Number The new height
      */
-    , containerHeightChanged: function(height) {
+    , containerHeightChanged: function(name, height) {
         if(this.anchor && this.anchor.vPos != VerticalPosition.Top) {
+            console.log(this);
             this.position = this.anchor.convertPoint(this.relativePosition, null, height);
         }
     }

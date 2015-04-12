@@ -39,14 +39,4 @@ extend(Wall, SolidEntity, {
                 break;
         }
     }
-    , containerWidthChanged: function(width) {
-        if(this.position.x) {
-            this.position.x = width;
-        }
-    }
-    , containerHeightChanged: function(height) {
-        if(this.position.y) {
-            this.position.y = height;
-        }
-    }
 });

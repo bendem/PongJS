@@ -135,4 +135,10 @@ extend(Platform, SolidEntity, {
 
         ball.velocity = ball.velocity.setRotation(rotation);
     }
+
+    , containerWidthChanged: function(name, w) {
+        if(this.getRightX() > w) {
+            this.setRightX(w);
+        }
+    }
 });
