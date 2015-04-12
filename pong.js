@@ -62,7 +62,6 @@ window.addEventListener('load', function() {
 
     eventManager.register('game_end', function(name, source) {
         var aiWon = source instanceof PlatformPlayer;
-        console.log(source, aiWon);
         entityList.register(new Text(
             new Point(0, -35),
             Anchor.MiddleMiddle,
