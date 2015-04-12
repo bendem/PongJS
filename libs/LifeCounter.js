@@ -1,11 +1,13 @@
-"use strict";
-
-var LifeCounter = function(position, anchor, direction, count, radius, spacing) {
+var LifeCounter = function(position, anchor, direction, losingLine,
+        count, radius, spacing) {
     Entity.call(this, position, anchor);
-    this.count = count;
     this.direction = direction;
+    this.losingLine = losingLine;
+    this.count = count;
     this.radius = radius || 7;
     this.spacing = spacing || this.radius * 3;
+
+    eventManager.register('life_lost', this.handleLifeLost, this);
 }
 
 extend(LifeCounter, Entity, {
@@ -55,5 +57,15 @@ extend(LifeCounter, Entity, {
             );
         }
         ctx.fill();
+    }
+    , handleLifeLost: function(name, source) {
+        if(source != this.losingLine) {
+            // Targeted to another counter
+            return;
+        }
+
+        if(this.count-- <= 0) {
+            eventManager.handleEvent('game_end', source.platform);
+        }
     }
 });

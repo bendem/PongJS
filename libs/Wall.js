@@ -1,11 +1,9 @@
-"use strict";
-
-var Wall = function(position, hasWidth, hasHeight) {
-    Entity.call(this, position);
+var Wall = function(position, anchor, hasWidth, hasHeight) {
+    Entity.call(this, position, anchor);
     SolidEntity.call(this);
     this.hasWidth = hasWidth;
     this.hasHeight = hasHeight;
-}
+};
 
 extend(Wall, SolidEntity, {
     getLeftX: function() {

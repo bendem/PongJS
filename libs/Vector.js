@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Creates a 0,0 based 2D vector.
  *

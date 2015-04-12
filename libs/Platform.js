@@ -1,11 +1,32 @@
-"use strict";
-
 // position: Point containing the top left corner position
 var Platform = function(position, anchor, width, height) {
     Entity.call(this, position, anchor);
     SolidEntity.call(this);
     this.width = width;
     this.height = height;
+
+    var losingLineAnchor;
+    switch(anchor) {
+        case Anchor.TopMiddle:
+        case Anchor.MiddleLeft:
+            losingLineAnchor = Anchor.TopLeft;
+            break;
+        case Anchor.BottomMiddle:
+            losingLineAnchor = Anchor.BottomLeft;
+            break;
+        case Anchor.MiddleRight:
+            losingLineAnchor = Anchor.TopRight;
+            break;
+    }
+
+    this.losingLine = new LosingLine(
+        new Point(0, 0),
+        losingLineAnchor,
+        this,
+        anchor.vPos == VerticalPosition.Middle
+    );
+
+    entityList.register(this.losingLine);
 };
 
 extend(Platform, SolidEntity, {
@@ -103,14 +124,14 @@ extend(Platform, SolidEntity, {
                 break;
         }
 
-        var rotation = directionRotation * half_pi;
+        var rotation = directionRotation * (Math.PI / 2);
         var sign = 1;
         // Directions greater than 1 are Down and Right
         if(ballPos < platformCenter && direction > 1
                 || ballPos > platformCenter && direction < 2) {
             sign = -1;
         }
-        rotation += percent * half_pi * sign;
+        rotation += percent * (Math.PI / 2) * sign;
 
         ball.velocity = ball.velocity.setRotation(rotation);
     }

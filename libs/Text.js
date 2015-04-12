@@ -1,5 +1,3 @@
-"use strict";
-
 var Alignement = Object.freeze({
     Left: 0,
     Center: 1,
@@ -29,6 +27,16 @@ extend(Text, Entity, {
                 offset = dimensions.width / 2;
                 break;
         }
+
+        // Shadow
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillText(
+            this.text,
+            this.position.x - offset + 1,
+            this.position.y + 1
+        );
+
+        ctx.fillStyle = this.style;
         ctx.fillText(
             this.text,
             this.position.x - offset,

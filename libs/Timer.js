@@ -1,5 +1,3 @@
-"use strict";
-
 var Timer = function(position, anchor, style, font) {
     Entity.call(this, position, anchor);
     this.style = style;

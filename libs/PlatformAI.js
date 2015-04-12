@@ -1,5 +1,3 @@
-"use strict";
-
 var PlatformAI = function(position, anchor, width, height) {
     Platform.call(this, position, anchor, width, height);
 };
@@ -22,7 +20,7 @@ extend(PlatformAI, Platform, {
             // Distance wanted
             Math.abs(this.ball.position.x - platformCenter),
             // Rate limiting
-            Math.abs(this.ball.velocity.multiply(now - this.previousFrame).getLength()) * 0.8
+            Math.abs(this.ball.velocity.multiply(now - this.previousFrame).getLength()) * 0.7
         );
 
         if (platformCenter < this.ball.position.x) {

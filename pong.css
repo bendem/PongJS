@@ -23,7 +23,7 @@ body {
 }
 
 .content-wrapper {
-    width: 80vw; height: 80vh;
+    width: 95%; height: 95%;
     background-color: #222;
     padding: 3px;
     border-radius: 3px;

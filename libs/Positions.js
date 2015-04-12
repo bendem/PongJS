@@ -1,15 +1,20 @@
-"use strict";
+var Direction = Object.freeze({
+    Up   : 0,
+    Left : 1,
+    Down : 2,
+    Right: 3
+});
 
 var VerticalPosition = Object.freeze({
-    Top: 0,
+    Top   : 0,
     Middle: 1,
     Bottom: 2
 });
 
 var HorizontalPosition = Object.freeze({
-    Left: 0,
+    Left  : 0,
     Middle: 1,
-    Right: 2
+    Right : 2
 });
 
 var Anchor;
@@ -74,14 +79,14 @@ var Anchor;
     }
 
     Anchor = Object.freeze({
-        TopLeft: new Position(HorizontalPosition.Left, VerticalPosition.Top),
-        MiddleLeft: new Position(HorizontalPosition.Left, VerticalPosition.Middle),
-        BottomLeft: new Position(HorizontalPosition.Left, VerticalPosition.Bottom),
-        TopMiddle: new Position(HorizontalPosition.Middle, VerticalPosition.Top),
+        TopLeft     : new Position(HorizontalPosition.Left, VerticalPosition.Top),
+        MiddleLeft  : new Position(HorizontalPosition.Left, VerticalPosition.Middle),
+        BottomLeft  : new Position(HorizontalPosition.Left, VerticalPosition.Bottom),
+        TopMiddle   : new Position(HorizontalPosition.Middle, VerticalPosition.Top),
         MiddleMiddle: new Position(HorizontalPosition.Middle, VerticalPosition.Middle),
         BottomMiddle: new Position(HorizontalPosition.Middle, VerticalPosition.Bottom),
-        TopRight: new Position(HorizontalPosition.Right, VerticalPosition.Top),
-        MiddleRight: new Position(HorizontalPosition.Right, VerticalPosition.Middle),
-        BottomRight: new Position(HorizontalPosition.Right, VerticalPosition.Bottom)
+        TopRight    : new Position(HorizontalPosition.Right, VerticalPosition.Top),
+        MiddleRight : new Position(HorizontalPosition.Right, VerticalPosition.Middle),
+        BottomRight : new Position(HorizontalPosition.Right, VerticalPosition.Bottom)
     });
 })();

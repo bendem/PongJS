@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * An entity able to provide collision informations.
  */
@@ -45,7 +43,5 @@ extend(SolidEntity, Entity, {
      * @param Ball      The ball which hit this entity
      * @param Direction The direction from which this entity was hit by the ball
      */
-    , handleCollision: function(ball, direction) {
-        unimplementedError();
-    }
+    , handleCollision: unimplementedError
 });

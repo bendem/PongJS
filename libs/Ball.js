@@ -1,8 +1,6 @@
-"use strict";
-
-var Ball = function(position, velocity, radius,
+var Ball = function(velocity, radius,
         velocityIncreaseRate, velocityIncreaseDelay) {
-    Entity.call(this, position)
+    Entity.call(this);
     // Velocity of the ball (in unit per ms)
     this.velocity = velocity;
     // Radius of the ball
@@ -15,12 +13,17 @@ var Ball = function(position, velocity, radius,
     // Original velocity
     this.originalVelocity = this.velocity.clone();
 
+    this.collisionHandler = new CollisionHandler(this);
+
     // Time at which the ball got updated for the first time
     this.firstFrame = 0;
     // Last time at which the velocity got increased
     this.lastVelocityIncrease = 0;
     // Time at which the ball got last updated
     this.previousFrame = 0;
+
+    eventManager.register('life_lost', this.reset, this);
+    this.reset();
 };
 
 extend(Ball, Entity, {
@@ -93,95 +96,30 @@ extend(Ball, Entity, {
             return;
         }
 
-        // Increase velocity every 5 seconds
-        if(time - this.lastVelocityIncrease > this.velocityIncreaseDelay) {
+        // Increase velocity every x seconds
+        while(time - this.lastVelocityIncrease > this.velocityIncreaseDelay) {
             this.velocity = this.velocity.multiply(this.velocityIncreaseRate);
-            this.lastVelocityIncrease = time;
+            this.lastVelocityIncrease += this.velocityIncreaseDelay;
         }
 
+        // How long since last update?
         var delta = time - this.previousFrame;
         this.previousFrame = time;
 
+        // Let collision handler do its things
+        this.collisionHandler.handleCollisions(objects, delta);
+
+        // Compute the actual velocity based on changes from the
+        // collision handler and multiply by the time since last frame.
         var actualVelocity = this.velocity.multiply(delta);
 
-        var goingUp = this.velocity.y < 0;
-        var goingLeft = this.velocity.x < 0;
-        var self = this;
-        objects.forEach(function(obj) {
-            if(obj == self || !obj.solid) {
-                // Don't handle collision with yourself or non solid objects
-                return;
-            }
-
-            // Horizontal collision
-            if(goingLeft
-                    // Will pass the object in this frame
-                    && isBetween(
-                        obj.getRightX(),
-                        self.getLeftX(),
-                        self.getLeftX() + actualVelocity.x
-                    )
-                    // Will actually go through
-                    && self.getBottomY() > obj.getTopY()
-                    && self.getTopY() < obj.getBottomY()) {
-                obj.handleCollision(self, Direction.Left);
-            } else if(!goingLeft
-                    // Will pass the object in this frame
-                    && isBetween(
-                        obj.getLeftX(),
-                        self.getRightX(),
-                        self.getRightX() + actualVelocity.x
-                    )
-                    // Will actually go through
-                    && self.getBottomY() > obj.getTopY()
-                    && self.getTopY() < obj.getBottomY()) {
-                obj.handleCollision(self, Direction.Right);
-            }
-
-            // Vertical collision
-            if(goingUp
-                    // Will pass the object in this frame
-                    && isBetween(
-                        obj.getBottomY(),
-                        self.getTopY(),
-                        self.getTopY() + actualVelocity.y
-                    )
-                    // Will actually go through
-                    && self.getRightX() > obj.getLeftX()
-                    && self.getLeftX() < obj.getRightX()) {
-                obj.handleCollision(self, Direction.Up);
-            } else if(!goingUp
-                    // Will pass the object in this frame
-                    && isBetween(
-                        obj.getTopY(),
-                        self.getBottomY(),
-                        self.getBottomY() + actualVelocity.y
-                    )
-                    // Will actually go through
-                    && self.getRightX() > obj.getLeftX()
-                    && self.getLeftX() < obj.getRightX()) {
-                obj.handleCollision(self, Direction.Down);
-            }
-
-            // Recompute the velocity
-            actualVelocity = self.velocity.multiply(delta);
-        });
-
-        if(this.getBottomY() + actualVelocity.y > h
-                || this.getTopY() + actualVelocity.y < 0) {
-            var event = 'life_lost';
-            if(this.getTopY() + actualVelocity.y < 0) {
-                event = 'ai_life_lost';
-            }
-
-            $pong.dispatchEvent(new Event(event));
-            this.position = new Point(w / 2, h / 5);
-            this.randomizeRotation();
-            this.initTimes(time);
-            return;
-        }
-
+        // Actually move the ball
         this.position.add(actualVelocity);
+    }
+
+    , reset: function() {
+        this.position = Anchor.MiddleMiddle.convertPoint(new Point(0, 0));
+        this.randomizeRotation();
     }
 
     , containerWidthChanged: function(width) {

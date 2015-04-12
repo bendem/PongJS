@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Creates an non solid entity.
  *
