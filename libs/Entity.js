@@ -58,7 +58,7 @@ Entity.prototype = {
      */
     , containerWidthChanged: function(name, width) {
         if(this.anchor && this.anchor.hPos != HorizontalPosition.Left) {
-            this.position = this.anchor.convertPoint(this.relativePosition, width);
+            this.position.x = this.anchor.convertPoint(this.relativePosition, width).x;
         }
     }
 
@@ -73,8 +73,7 @@ Entity.prototype = {
      */
     , containerHeightChanged: function(name, height) {
         if(this.anchor && this.anchor.vPos != VerticalPosition.Top) {
-            console.log(this);
-            this.position = this.anchor.convertPoint(this.relativePosition, null, height);
+            this.position.y = this.anchor.convertPoint(this.relativePosition, null, height).y;
         }
     }
 };
