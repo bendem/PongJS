@@ -78,10 +78,16 @@ window.addEventListener('load', function() {
 
     var game_loop = function(time) {
         eventManager.handleEvent('draw', ctx);
-        eventManager.handleEvent('update', time);
         if(running) {
             requestAnimationFrame(game_loop);
         }
+
+        // Execute game logic in a callback so it does not prevent
+        // the animation frame from ending.
+        // http://impactjs.com/forums/impact-engine/misuse-of-requestanimationframe
+        setTimeout(function() {
+            eventManager.handleEvent('update', time);
+        }, 0);
     };
 
     // Holy the setup is done, we can launch the game
