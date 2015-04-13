@@ -10,37 +10,50 @@ var Text = function(position, anchor, text, style, alignement, font) {
     this.style = style;
     this.alignement = alignement;
     this.font = font;
+
+    this.offset = false;
 };
 
 extend(Text, Entity, {
-    draw: function(ctx) {
+    drawShadow: function(ctx) {
+        this.prepareDraw(ctx);
+
         ctx.font = this.font;
-        ctx.fillStyle = this.style;
-        var dimensions = ctx.measureText(this.text);
-
-        var offset = 0;
-        switch(this.alignement) {
-            case Alignement.Right:
-                offset = dimensions.width;
-                break;
-            case Alignement.Center:
-                offset = dimensions.width / 2;
-                break;
-        }
-
-        // Shadow
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
         ctx.fillText(
             this.text,
-            this.position.x - offset + 1,
+            this.position.x - this.offset + 1,
             this.position.y + 1
         );
-
+    }
+    , draw: function(ctx) {
+        ctx.font = this.font;
+        // Save the canvas style since we change the fillStyle.
+        ctx.save();
         ctx.fillStyle = this.style;
         ctx.fillText(
             this.text,
-            this.position.x - offset,
+            this.position.x - this.offset,
             this.position.y
         );
+        ctx.restore();
+    }
+
+    , prepareDraw: function(ctx) {
+        if(this.offset !== false) {
+            return;
+        }
+
+        ctx.font = this.font;
+        var dimensions = ctx.measureText(this.text);
+
+        this.offset = 0;
+        switch(this.alignement) {
+            case Alignement.Right:
+                this.offset = dimensions.width;
+                break;
+            case Alignement.Center:
+                this.offset = dimensions.width / 2;
+                break;
+        }
     }
 });

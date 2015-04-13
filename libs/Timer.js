@@ -1,6 +1,5 @@
-var Timer = function(position, anchor, style, font) {
+var Timer = function(position, anchor, font) {
     Entity.call(this, position, anchor);
-    this.style = style;
     this.font = font;
     this.start = 0;
     this.timer = 0;
@@ -12,28 +11,39 @@ var Timer = function(position, anchor, style, font) {
     document.querySelector('body').appendChild($span);
     this.fontHeight = $span.offsetHeight;
     $span.remove();
+    this.fontWidth = false;
 };
 
 extend(Timer, Entity, {
-    draw: function(ctx) {
-        var dimensions = ctx.measureText('0');
-        ctx.font = this.font;
+    drawShadow: function(ctx) {
+        this.prepareDraw(ctx);
 
-        // Shadow
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        ctx.font = this.font;
         ctx.fillText(
             this.timer,
-            this.position.x + dimensions.width + 1,
+            this.position.x + this.fontWidth + 1,
             this.position.y + this.fontHeight + 1
         );
+    }
 
-        ctx.fillStyle = this.style;
+    , draw: function(ctx) {
+        ctx.font = this.font;
         ctx.fillText(
             this.timer,
-            this.position.x + dimensions.width,
+            this.position.x + this.fontWidth,
             this.position.y + this.fontHeight
         );
     }
+
+    , prepareDraw: function(ctx) {
+        if(this.fontWidth !== false) {
+            return;
+        }
+        ctx.font = this.font;
+        var dimensions = ctx.measureText('0');
+        this.fontWidth = dimensions.width;
+    }
+
     , update: function(now) {
         if(this.start === 0) {
             this.start = now;

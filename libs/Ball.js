@@ -50,10 +50,8 @@ extend(Ball, Entity, {
         return this;
     }
 
-    , draw: function(ctx) {
-        // Shadow
+    , drawShadow: function(ctx) {
         ctx.beginPath();
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
         ctx.arc(
             this.position.x + 1,
             this.position.y + 1,
@@ -62,9 +60,10 @@ extend(Ball, Entity, {
             2 * Math.PI
         );
         ctx.fill();
+    }
 
+    , draw: function(ctx) {
         ctx.beginPath();
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
         ctx.arc(
             this.position.x,
             this.position.y,

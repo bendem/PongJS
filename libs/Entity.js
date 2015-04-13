@@ -39,6 +39,14 @@ Entity.prototype = {
     draw: emptyFunction
 
     /**
+     * Draw the shadow of this entity
+     * Note: This method is called every frame automatically.
+     *
+     * @param CanvasRenderingContext2D The context to work on
+     */
+    , drawShadow: emptyFunction
+
+    /**
      * Updates the entity.
      * Note: This method is called every frame automatically.
      *

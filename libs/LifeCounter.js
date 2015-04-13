@@ -11,46 +11,28 @@ var LifeCounter = function(position, anchor, direction, losingLine,
 }
 
 extend(LifeCounter, Entity, {
-    draw: function(ctx) {
-        var i;
+    drawShadow: function(ctx) {
+        this.prepareDraw();
 
-        // Depends on the direction
-        var x_mod = 0, y_mod = 0;
-        switch(this.direction) {
-            case Direction.Left:
-                x_mod = -this.spacing;
-                break;
-            case Direction.Right:
-                x_mod = this.spacing;
-                break;
-            case Direction.Up:
-                y_mod = -this.spacing;
-                break;
-            case Direction.Down:
-                y_mod = this.spacing;
-                break;
-        }
-
-        // Shadows
         ctx.beginPath();
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-        for (i = this.count - 1; i >= 0; --i) {
+        for (var i = this.count - 1; i >= 0; --i) {
             ctx.arc(
-                this.position.x + x_mod * i + 1,
-                this.position.y + y_mod * i + 1,
+                this.position.x + this.x_mod * i + 1,
+                this.position.y + this.y_mod * i + 1,
                 8,
                 0,
                 2 * Math.PI
             );
         }
         ctx.fill();
+    }
 
+    , draw: function(ctx) {
         ctx.beginPath();
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        for (i = this.count - 1; i >= 0; --i) {
+        for (var i = this.count - 1; i >= 0; --i) {
             ctx.arc(
-                this.position.x + x_mod * i,
-                this.position.y + y_mod * i,
+                this.position.x + this.x_mod * i,
+                this.position.y + this.y_mod * i,
                 7,
                 0,
                 2 * Math.PI
@@ -58,6 +40,25 @@ extend(LifeCounter, Entity, {
         }
         ctx.fill();
     }
+
+    , prepareDraw: function() {
+        this.x_mod = 0, this.y_mod = 0;
+        switch(this.direction) {
+            case Direction.Left:
+                this.x_mod = -this.spacing;
+                break;
+            case Direction.Right:
+                this.x_mod = this.spacing;
+                break;
+            case Direction.Up:
+                this.y_mod = -this.spacing;
+                break;
+            case Direction.Down:
+                this.y_mod = this.spacing;
+                break;
+        }
+    }
+
     , handleLifeLost: function(name, source) {
         if(source != this.losingLine) {
             // Targeted to another counter

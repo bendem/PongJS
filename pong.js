@@ -49,7 +49,6 @@ window.addEventListener('load', function() {
         .register(new Timer(
             new Point(0, 0),
             Anchor.TopLeft,
-            'rgba(255, 255, 255, 0.8)',
             '1.1rem sans-serif'
         ))
         .register(new Wall(new Point(0, 0), Anchor.TopLeft, false, true))

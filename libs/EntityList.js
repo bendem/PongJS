@@ -20,6 +20,15 @@ EntityList.prototype = {
 
     , draw: function(name, ctx) {
         ctx.clearRect(0, 0, w, h);
+
+        // Draw shadows
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        this.entities.forEach(function(entity) {
+            entity.drawShadow(ctx);
+        }, this);
+
+        // Draw objects
+        ctx.fillStyle = '#999';
         this.entities.forEach(function(entity) {
             entity.draw(ctx);
         }, this);

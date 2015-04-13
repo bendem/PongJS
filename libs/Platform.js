@@ -69,8 +69,7 @@ extend(Platform, SolidEntity, {
         }
     }
 
-    , draw: function(ctx) {
-        // Shadow
+    , drawShadow: function(ctx) {
         ctx.beginPath();
         ctx.rect(
             this.position.x,
@@ -78,9 +77,10 @@ extend(Platform, SolidEntity, {
             this.width + 2,
             this.height + 2
         );
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
         ctx.fill();
+    }
 
+    , draw: function(ctx) {
         ctx.beginPath();
         ctx.rect(
             this.position.x,
@@ -88,7 +88,6 @@ extend(Platform, SolidEntity, {
             this.width,
             this.height
         );
-        ctx.fillStyle = '#999';
         ctx.fill();
     }
     , handleCollision: function(ball, direction) {
